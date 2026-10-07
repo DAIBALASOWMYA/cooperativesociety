@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sahyog Cooperative Society — Member Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F6F1E6;
+    --bg-wash: #EFE7D6;
+    --card: #FFFDF8;
+    --card-border: #E3D9C2;
+    --ink: #22301F;
+    --ink-soft: #4C5A43;
+    --muted: #7A735F;
+    --primary: #2F5233;
+    --primary-dim: #3E6B44;
+    --accent: #B8872B;
+    --accent-soft: #E8D29A;
+    --brick: #8B3A3A;
+    --brick-soft: #F1DCDC;
+    --navy: #233250;
+    --navy-soft: #DEE3EE;
+    --slate: #4C6470;
+    --slate-soft: #DEE6E8;
+    --plum: #7A4A6B;
+    --plum-soft: #EADCE4;
+    --shadow: 0 1px 2px rgba(34,48,31,0.06), 0 8px 24px rgba(34,48,31,0.08);
+    --radius: 10px;
+    font-size: 16px;
+  }
+  :root:not([data-theme="light"]) {
+    @media (prefers-color-scheme: dark) {
+      --bg: #161C14;
+      --bg-wash: #1D2419;
+      --card: #202A1C;
+      --card-border: #334030;
+      --ink: #EDEBDD;
+      --ink-soft: #C9CCB8;
+      --muted: #9AA08C;
+      --primary: #7FB386;
+      --primary-dim: #6AA072;
+      --accent: #E3BD63;
+      --accent-soft: #3A3522;
+      --brick: #E39999;
+      --brick-soft: #3A2222;
+      --navy: #9FB4E0;
+      --navy-soft: #202940;
+      --slate: #A7C2CC;
+      --slate-soft: #233036;
+      --plum: #D9A8C9;
+      --plum-soft: #342531;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #161C14;
+    --bg-wash: #1D2419;
+    --card: #202A1C;
+    --card-border: #334030;
+    --ink: #EDEBDD;
+    --ink-soft: #C9CCB8;
+    --muted: #9AA08C;
+    --primary: #7FB386;
+    --primary-dim: #6AA072;
+    --accent: #E3BD63;
+    --accent-soft: #3A3522;
+    --brick: #E39999;
+    --brick-soft: #3A2222;
+    --navy: #9FB4E0;
+    --navy-soft: #202940;
+    --slate: #A7C2CC;
+    --slate-soft: #233036;
+    --plum: #D9A8C9;
+    --plum-soft: #342531;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    -webkit-font-smoothing: antialiased;
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  h1, h2, h3, .serif { font-family: 'Lora', Georgia, serif; }
+  button { font-family: inherit; }
+  a { color: inherit; }
+  ::selection { background: var(--accent-soft); }
+
+  .hidden { display: none !important; }
+
+  /* ---------- Background texture ---------- */
+  .paper-bg {
+    position: fixed; inset: 0; z-index: -1;
+    background:
+      radial-gradient(circle at 18% 15%, var(--bg-wash) 0%, transparent 45%),
+      radial-gradient(circle at 85% 80%, var(--bg-wash) 0%, transparent 40%),
+      var(--bg);
+  }
+
+  /* ================= LOGIN ================= */
+  #login-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.25rem;
+  }
+  .login-wrap {
+    width: 100%;
+    max-width: 920px;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  @media (max-width: 760px) {
+    .login-wrap { grid-template-columns: 1fr; }
+    .login-side { display: none; }
+  }
+  .login-side {
+    background: linear-gradient(165deg, var(--primary) 0%, var(--primary-dim) 100%);
+    color: #FBF8EF;
+    padding: 2.6rem 2.2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .login-side::after {
+    content: "";
+    position: absolute;
+    right: -60px; bottom: -60px;
+    width: 220px; height: 220px;
+    border: 1px solid rgba(251,248,239,0.25);
+    border-radius: 50%;
+  }
+  .login-side::before {
+    content: "";
+    position: absolute;
+    right: 10px; bottom: 10px;
+    width: 140px; height: 140px;
+    border: 1px solid rgba(251,248,239,0.18);
+    border-radius: 50%;
+  }
+  .seal {
+    width: 52px; height: 52px;
+    border: 1.5px solid var(--accent-soft);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 1.6rem;
+  }
+  .login-side h1 {
+    font-size: 1.6rem;
+    line-height: 1.3;
+    margin: 0 0 0.6rem;
+    font-weight: 600;
+  }
+  .login-side p {
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: #E4E0CE;
+    margin: 0;
+    max-width: 30ch;
+  }
+  .login-side .tag {
+    font-size: 0.78rem;
+    letter-spacing: 0.02em;
+    color: var(--accent-soft);
+    margin-top: 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .login-form {
+    padding: 2.6rem 2.4rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .login-form h2 {
+    font-size: 1.3rem;
+    margin: 0 0 0.3rem;
+  }
+  .login-form .sub {
+    font-size: 0.88rem;
+    color: var(--muted);
+    margin: 0 0 1.6rem;
+  }
+
+  .role-toggle {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 5px;
+    margin-bottom: 1.3rem;
+    background: var(--bg-wash);
+  }
+  .role-toggle button {
+    border: none;
+    background: transparent;
+    padding: 0.5rem 0.4rem;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+    white-space: nowrap;
+  }
+  .role-toggle button.active {
+    background: var(--card);
+    color: var(--primary);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  .field { margin-bottom: 1.1rem; }
+  .field label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+    margin-bottom: 0.35rem;
+  }
+  .field input {
+    width: 100%;
+    padding: 0.65rem 0.8rem;
+    border: 1px solid var(--card-border);
+    border-radius: 7px;
+    background: var(--card);
+    color: var(--ink);
+    font-size: 0.92rem;
+    outline: none;
+    transition: border-color 0.15s ease;
+  }
+  .field input:focus-visible {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(47,82,51,0.15);
+  }
+
+  .btn-primary {
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 7px;
+    background: var(--primary);
+    color: #FBF8EF;
+    font-size: 0.94rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 0.3rem;
+    transition: background 0.15s ease, transform 0.08s ease;
+  }
+  .btn-primary:hover { background: var(--primary-dim); }
+  .btn-primary:active { transform: scale(0.99); }
+
+  .error-box {
+    background: var(--brick-soft);
+    color: var(--brick);
+    border: 1px solid var(--brick);
+    border-radius: 7px;
+    padding: 0.55rem 0.7rem;
+    font-size: 0.82rem;
+    margin-bottom: 1rem;
+  }
+
+  .demo-box {
+    margin-top: 1.4rem;
+    padding: 0.85rem 0.95rem;
+    background: var(--bg-wash);
+    border: 1px dashed var(--card-border);
+    border-radius: 8px;
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .demo-box strong { color: var(--ink-soft); }
+  .demo-box code {
+    background: var(--card);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 0.76rem;
+    border: 1px solid var(--card-border);
+  }
+
+  /* ================= APP SHELL ================= */
+  #app-screen { min-height: 100vh; display: none; }
+  #app-screen.active { display: flex; }
+
+  .sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    background: var(--card);
+    border-right: 1px solid var(--card-border);
+    padding: 1.4rem 1rem;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+  }
+  .sidebar .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0 0.4rem 1.3rem;
+    margin-bottom: 1.1rem;
+    border-bottom: 1px solid var(--card-border);
+  }
+  .sidebar .brand .mark {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: 1.5px solid var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .sidebar .brand .name {
+    font-family: 'Lora', serif;
+    font-weight: 600;
+    font-size: 0.92rem;
+    line-height: 1.25;
+  }
+  .nav-group-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--muted);
+    padding: 0.5rem 0.6rem 0.3rem;
+    letter-spacing: 0.03em;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.55rem 0.6rem;
+    border-radius: 7px;
+    font-size: 0.86rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+    cursor: pointer;
+    margin-bottom: 0.1rem;
+    border: none;
+    background: transparent;
+    width: 100%;
+    text-align: left;
+  }
+  .nav-item .ic { font-size: 1rem; width: 1.2rem; text-align: center; }
+  .nav-item:hover { background: var(--bg-wash); }
+  .nav-item.active {
+    background: var(--primary);
+    color: #FBF8EF;
+  }
+  .sidebar-foot {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid var(--card-border);
+  }
+  .logout-btn {
+    width: 100%;
+    padding: 0.55rem 0.6rem;
+    border-radius: 7px;
+    border: 1px solid var(--card-border);
+    background: transparent;
+    color: var(--muted);
+    font-size: 0.83rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .logout-btn:hover { background: var(--bg-wash); color: var(--brick); border-color: var(--brick); }
+
+  .main-area {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.1rem 1.8rem;
+    border-bottom: 1px solid var(--card-border);
+    background: var(--card);
+    position: sticky;
+    top: 0;
+    z-index: 5;
+  }
+  .topbar .greet h2 { margin: 0; font-size: 1.15rem; }
+  .topbar .greet p { margin: 0.1rem 0 0; font-size: 0.8rem; color: var(--muted); }
+  .role-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  .role-badge.member { background: var(--accent-soft); color: var(--accent); }
+  .role-badge.admin { background: var(--navy-soft); color: var(--navy); }
+  .role-badge.clerk { background: var(--slate-soft); color: var(--slate); }
+  .role-badge.accountant { background: var(--accent-soft); color: var(--primary); }
+  .role-badge.manager { background: var(--plum-soft); color: var(--plum); }
+
+  .mobile-menu-btn {
+    display: none;
+    border: 1px solid var(--card-border);
+    background: var(--card);
+    border-radius: 7px;
+    width: 36px; height: 36px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    color: var(--ink);
+  }
+
+  .content {
+    padding: 1.8rem;
+    flex: 1;
+    overflow-x: hidden;
+  }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  .section-head { margin-bottom: 1.2rem; }
+  .section-head h3 { margin: 0 0 0.25rem; font-size: 1.25rem; }
+  .section-head p { margin: 0; color: var(--muted); font-size: 0.86rem; }
+
+  /* Cards & grids */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 0.9rem;
+    margin-bottom: 1.4rem;
+  }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 1.1rem 1.2rem;
+    box-shadow: var(--shadow);
+  }
+  .stat-card .label { font-size: 0.76rem; color: var(--muted); font-weight: 600; margin-bottom: 0.4rem; }
+  .stat-card .value { font-family: 'Lora', serif; font-size: 1.5rem; font-weight: 600; color: var(--ink); }
+  .stat-card .sub { font-size: 0.74rem; color: var(--muted); margin-top: 0.25rem; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 1.3rem 1.4rem;
+    box-shadow: var(--shadow);
+    margin-bottom: 1.2rem;
+  }
+  .card h4 {
+    margin: 0 0 1rem;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .kv-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem 1.4rem;
+  }
+  .kv { }
+  .kv .k { font-size: 0.74rem; color: var(--muted); margin-bottom: 0.2rem; }
+  .kv .v { font-size: 0.98rem; font-weight: 600; color: var(--ink); }
+
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+  thead th {
+    text-align: left;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--muted);
+    font-weight: 700;
+    padding: 0.5rem 0.7rem;
+    border-bottom: 1px solid var(--card-border);
+    white-space: nowrap;
+  }
+  tbody td {
+    padding: 0.6rem 0.7rem;
+    border-bottom: 1px solid var(--card-border);
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: var(--bg-wash); }
+  .num { font-variant-numeric: tabular-nums; }
+
+  .pill {
+    display: inline-block;
+    padding: 0.18rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+  .pill.green { background: var(--accent-soft); color: var(--primary); }
+  .pill.gold { background: var(--accent-soft); color: var(--accent); }
+  .pill.gray { background: var(--bg-wash); color: var(--muted); }
+  .pill.red { background: var(--brick-soft); color: var(--brick); }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+  @media (max-width: 820px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* Access matrix */
+  .access-table td.yes { color: var(--primary); font-weight: 700; }
+  .access-table td.own { color: var(--accent); font-weight: 700; }
+  .access-table td.no { color: var(--muted); }
+
+  .member-row {
+    cursor: pointer;
+  }
+  .member-row.selected { background: var(--accent-soft); }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--primary);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 1rem;
+  }
+
+  /* Mobile sidebar */
+  @media (max-width: 880px) {
+    .sidebar {
+      position: fixed;
+      left: 0; top: 0; bottom: 0;
+      z-index: 50;
+      transform: translateX(-100%);
+      transition: transform 0.2s ease;
+      box-shadow: var(--shadow);
+    }
+    .sidebar.open { transform: translateX(0); }
+    .mobile-menu-btn { display: block; }
+    .content { padding: 1.2rem; }
+    .topbar { padding: 1rem 1.2rem; }
+    .sidebar-scrim {
+      display: none;
+      position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 40;
+    }
+    .sidebar-scrim.open { display: block; }
+  }
+
+  footer.app-foot {
+    padding: 1rem 1.8rem;
+    font-size: 0.74rem;
+    color: var(--muted);
+    border-top: 1px solid var(--card-border);
+  }
+</style>
+</head>
+<body>
+<div class="paper-bg"></div>
+
+<!-- ======================= LOGIN SCREEN ======================= -->
+<div id="login-screen">
+  <div class="login-wrap">
+    <div class="login-side">
+      <div>
+        <div class="seal">📒</div>
+        <h1>Sahyog Cooperative<br>Society</h1>
+        <p>Membership, savings, shares and loan records — in one place, built on trust the way a cooperative always has.</p>
+      </div>
+      <div class="tag">Member &amp; Staff Portal · Est. 1987</div>
+    </div>
+
+    <div class="login-form">
+      <h2>Sign in</h2>
+      <p class="sub">Choose your role to continue.</p>
+
+      <div class="role-toggle">
+        <button type="button" id="role-member-btn" class="active" onclick="setRole('member')">Member</button>
+        <button type="button" id="role-clerk-btn" onclick="setRole('clerk')">Clerk</button>
+        <button type="button" id="role-accountant-btn" onclick="setRole('accountant')">Accountant</button>
+        <button type="button" id="role-manager-btn" onclick="setRole('manager')">Manager</button>
+        <button type="button" id="role-admin-btn" onclick="setRole('admin')">Admin</button>
+      </div>
+
+      <div id="login-error" class="error-box hidden"></div>
+
+      <form id="login-form" onsubmit="return handleLogin(event)">
+        <div class="field">
+          <label for="username">Username</label>
+          <input type="text" id="username" autocomplete="username" placeholder="e.g. member1">
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" autocomplete="current-password" placeholder="••••••••">
+        </div>
+        <button type="submit" class="btn-primary" id="login-btn">Sign in as Member</button>
+      </form>
+
+      <div class="demo-box" id="demo-box">
+        <strong>Demo credentials</strong><br>
+        Member — <code>member1</code> / <code>member123</code><br>
+        Clerk — <code>clerk1</code> / <code>clerk123</code><br>
+        Accountant — <code>accountant1</code> / <code>acc123</code><br>
+        Manager — <code>manager1</code> / <code>manager123</code><br>
+        Admin — <code>admin</code> / <code>admin123</code>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================= APP SHELL ======================= -->
+<div id="app-screen">
+  <div class="sidebar-scrim" id="scrim" onclick="toggleSidebar(false)"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="mark">📒</div>
+      <div class="name">Sahyog<br>Cooperative Society</div>
+    </div>
+
+    <!-- Member nav -->
+    <div id="member-nav">
+      <div class="nav-group-label">My Account</div>
+      <button class="nav-item" data-panel="m-savings" onclick="showPanel('m-savings')"><span class="ic">🏦</span> Savings Account</button>
+      <button class="nav-item" data-panel="m-transactions" onclick="showPanel('m-transactions')"><span class="ic">🧾</span> Savings Transactions</button>
+      <div class="nav-group-label">Shares</div>
+      <button class="nav-item" data-panel="m-shares" onclick="showPanel('m-shares')"><span class="ic">📜</span> Share &amp; Class Holding</button>
+      <button class="nav-item" data-panel="m-dividend" onclick="showPanel('m-dividend')"><span class="ic">💰</span> Dividend</button>
+      <div class="nav-group-label">Loans</div>
+      <button class="nav-item" data-panel="m-loan" onclick="showPanel('m-loan')"><span class="ic">🏷️</span> Loan</button>
+      <button class="nav-item" data-panel="m-loanrepay" onclick="showPanel('m-loanrepay')"><span class="ic">📆</span> Loan Repayment</button>
+      <button class="nav-item" data-panel="m-loanproduct" onclick="showPanel('m-loanproduct')"><span class="ic">📦</span> Loan Products</button>
+      <div class="nav-group-label">Other</div>
+      <button class="nav-item" data-panel="m-nominee" onclick="showPanel('m-nominee')"><span class="ic">🧑‍🤝‍🧑</span> Nominee</button>
+      <button class="nav-item" data-panel="m-meetings" onclick="showPanel('m-meetings')"><span class="ic">🗓️</span> Meetings</button>
+      <button class="nav-item" data-panel="m-attendance" onclick="showPanel('m-attendance')"><span class="ic">✅</span> Meeting Attendance</button>
+    </div>
+
+    <!-- Staff nav (Clerk / Accountant / Manager / Admin) — built dynamically per role -->
+    <div id="staff-nav" class="hidden"></div>
+
+    <div class="sidebar-foot">
+      <button class="logout-btn" onclick="handleLogout()">Sign out</button>
+    </div>
+  </aside>
+
+  <div class="main-area">
+    <div class="topbar">
+      <div style="display:flex; align-items:center; gap:0.8rem;">
+        <button class="mobile-menu-btn" onclick="toggleSidebar(true)">☰</button>
+        <div class="greet">
+          <h2 id="greet-name">Welcome</h2>
+          <p id="greet-sub">—</p>
+        </div>
+      </div>
+      <span class="role-badge member" id="role-badge">Member</span>
+    </div>
+
+    <div class="content" id="content">
+
+      <!-- ============ MEMBER PANELS ============ -->
+      <section class="panel" id="m-savings">
+        <div class="section-head"><h3>Savings Account</h3><p>Your primary savings account held with the society.</p></div>
+        <div class="stat-grid" id="savings-stats"></div>
+        <div class="card">
+          <h4>Account details</h4>
+          <div class="kv-grid" id="savings-details"></div>
+        </div>
+      </section>
+
+      <section class="panel" id="m-transactions">
+        <div class="section-head"><h3>Savings Transactions</h3><p>Deposits and withdrawals on your savings account.</p></div>
+        <div class="card"><div class="table-wrap">
+          <table><thead><tr><th>Date</th><th>Type</th><th>Description</th><th>Amount (₹)</th><th>Balance (₹)</th></tr></thead>
+          <tbody id="transactions-body"></tbody></table>
+        </div></div>
+      </section>
+
+      <section class="panel" id="m-shares">
+        <div class="section-head"><h3>Share &amp; Class Holding</h3><p>Your membership share class and current holding.</p></div>
+        <div class="card"><div class="kv-grid" id="shares-details"></div></div>
+      </section>
+
+      <section class="panel" id="m-dividend">
+        <div class="section-head"><h3>Dividend</h3><p>Dividends declared on your share holding by financial year.</p></div>
+        <div class="card"><div class="table-wrap">
+          <table><thead><tr><th>Financial Year</th><th>Dividend Rate</th><th>Amount (₹)</th><th>Status</th></tr></thead>
+          <tbody id="dividend-body"></tbody></table>
+        </div></div>
+      </section>
+
+      <section class="panel" id="m-loan">
+        <div class="section-head"><h3>Loan</h3><p>Loans currently active against your membership.</p></div>
+        <div id="loan-cards"></div>
+      </section>
+
+      <section class="panel" id="m-loanrepay">
+        <div class="section-head"><h3>Loan Repayment</h3><p>EMI schedule and repayment history for your active loan.</p></div>
+        <div class="card"><div class="table-wrap">
+          <table><thead><tr><th>Due Date</th><th>EMI (₹)</th><th>Principal (₹)</th><th>Interest (₹)</th><th>Balance (₹)</th><th>Status</th></tr></thead>
+          <tbody id="loanrepay-body"></tbody></table>
+        </div></div>
+      </section>
+
+      <section class="panel" id="m-loanproduct">
+        <div class="section-head"><h3>Loan Products</h3><p>Loan products currently offered by the society.</p></div>
+        <div class="stat-grid" id="loanproduct-cards"></div>
+      </section>
+
+      <section class="panel" id="m-nominee">
+        <div class="section-head"><h3>Nominee</h3><p>The nominee registered against your membership and savings.</p></div>
+        <div class="card"><div class="kv-grid" id="nominee-details"></div></div>
+      </section>
+
+      <section class="panel" id="m-meetings">
+        <div class="section-head"><h3>Meetings</h3><p>General body and committee meetings of the society.</p></div>
+        <div class="card"><div class="table-wrap">
+          <table><thead><tr><th>Date</th><th>Meeting</th><th>Type</th><th>Venue</th></tr></thead>
+          <tbody id="meetings-body"></tbody></table>
+        </div></div>
+      </section>
+
+      <section class="panel" id="m-attendance">
+        <div class="section-head"><h3>Meeting Attendance</h3><p>Your attendance record across past meetings.</p></div>
+        <div class="card"><div class="table-wrap">
+          <table><thead><tr><th>Date</th><th>Meeting</th><th>Status</th></tr></thead>
+          <tbody id="attendance-body"></tbody></table>
+        </div></div>
+      </section>
+
+      <!-- ============ ADMIN PANELS ============ -->
+      <section class="panel" id="a-overview">
+        <div class="section-head"><h3>Society Overview</h3><p>A snapshot across all members of the society.</p></div>
+        <div class="stat-grid" id="admin-stats"></div>
+        <div class="card">
+          <h4>Next scheduled meeting</h4>
+          <div class="kv-grid" id="admin-next-meeting"></div>
+        </div>
+      </section>
+
+      <section class="panel" id="a-access">
+        <div class="section-head"><h3>Access Details</h3><p>What each role can see and manage within the portal.</p></div>
+        <div class="card">
+          <div class="table-wrap">
+            <table class="access-table">
+              <thead><tr><th>Module</th><th>Member</th><th>Clerk</th><th>Accountant</th><th>Manager</th><th>Admin</th></tr></thead>
+              <tbody id="access-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="a-savings">
+        <div class="section-head"><h3>Savings Accounts — All Members</h3><p>Every member's savings account, across the society.</p></div>
+        <div class="card"><div class="table-wrap">
+          <table><thead><tr><th>Member</th><th>Account No.</th><th>Balance (₹)</th><th>Interest Rate</th><th>Opened On</th><th>Status</th></tr></thead>
+          <tbody id="a-savings-body"></tbody></table>
+        </div></div>
+      </section>
+
+      <section class="panel" id="a-transactions">
+        <div class="section-head"><h3>Savings Transactions — All Members</h3><p>Combined transaction log across every savings account.</p></div>
+        <div class="card"><div class="table-wrap">
+          <table><thead><tr><th>Date</th><th>Member</th><th>Type</th><th>Description</th><th>Amount (₹)</th><th>Balance (₹)</th></tr></thead>
+          <tbody id="a-transactions-body"></tbody></table>
+        </div></div>
+      </section>
+
+      <section class="panel" id="a-shares">
+        <div class="section-head"><h3>Share &amp; Class Holdings — All Members</h3><p>Share class and holding value for every member.</p></div>
+        <div class="card"><div class="table-wrap">
+          <table><thead><tr><th>Member</th><th>Share Class</th><th>Certificate No.</th><th>Shares Held</th><th>Value/Share (₹)</th><th>Total Value (₹)</th></tr></thead>
+          <tbody id="a-shares-body"></tbody></table>
+        </div></div>
+      </section>
+
+      <section class="panel" id="a-dividend">
+        <div class="section-head"><h3>Dividend — All Members</h3><p>Declared dividends across all members and financial years.</p></div>
+        <div class="card"><div class="table-wrap">
+          <table><thead><tr><th>Member</th><th>Financial Year</th><th>Rate</th><th>Amount (₹)</th><th>Status</th></tr></thead>
+          <tbody id="a-dividend-body"></tbody></table>
+        </div></div>
+      </section>
+
+      <section class="panel" id="a-loan">
+        <div class="section-head"><h3>Loan — All Members</h3><p>Every loan currently on the society's books.</p></div>
+        <div class="card"><div class="table-wrap">
+          <table><thead><tr><th>Member</th><th>Loan ID</th><th>Product</th><th>Principal (₹)</th><th>Outstanding (₹)</th><th>Rate</th><th>Status</th></tr></thead>
+          <tbody id="a-loan-body"></tbody></table>
+        </div></div>
+      </section>
+
+      <section class="panel" id="a-loanrepay">
+        <div class="section-head"><h3>Loan Repayment — All Members</h3><p>EMI schedule and repayment history across all active loans.</p></div>
+        <div class="card"><div class="table-wrap">
+          <table><thead><tr><th>Member</th><th>Due Date</th><th>EMI (₹)</th><th>Principal (₹)</th><th>Interest (₹)</th><th>Balance (₹)</th><th>Status</th></tr></thead>
+          <tbody id="a-loanrepay-body"></tbody></table>
+        </div></div>
+      </section>
+
+      <section class="panel" id="a-loanproduct">
+        <div class="section-head"><h3>Loan Products</h3><p>Loan products offered by the society. Admins can create and edit these.</p></div>
+        <div class="stat-grid" id="a-loanproduct-cards"></div>
+      </section>
+
+      <section class="panel" id="a-nominee">
+        <div class="section-head"><h3>Nominee — All Members</h3><p>Registered nominee for every member.</p></div>
+        <div class="card"><div class="table-wrap">
+          <table><thead><tr><th>Member</th><th>Nominee</th><th>Relationship</th><th>Date of Birth</th><th>Share %</th></tr></thead>
+          <tbody id="a-nominee-body"></tbody></table>
+        </div></div>
+      </section>
+
+      <section class="panel" id="a-meetings">
+        <div class="section-head"><h3>Meetings</h3><p>Society-wide meeting schedule. Admins can create and manage meetings.</p></div>
+        <div class="card"><div class="table-wrap">
+          <table><thead><tr><th>Date</th><th>Meeting</th><th>Type</th><th>Venue</th></tr></thead>
+          <tbody id="a-meetings-body"></tbody></table>
+        </div></div>
+      </section>
+
+      <section class="panel" id="a-attendance">
+        <div class="section-head"><h3>Meeting Attendance — All Members</h3><p>Attendance record for every member, across all meetings.</p></div>
+        <div class="card"><div class="table-wrap">
+          <table><thead><tr><th>Member</th><th>Date</th><th>Meeting</th><th>Status</th></tr></thead>
+          <tbody id="a-attendance-body"></tbody></table>
+        </div></div>
+      </section>
+
+      <section class="panel" id="a-members">
+        <div id="a-members-list">
+          <div class="section-head"><h3>Member Records</h3><p>Select a member to view their full savings, shares, loan and meeting records.</p></div>
+          <div class="card"><div class="table-wrap">
+            <table><thead><tr><th>Member ID</th><th>Name</th><th>Savings Balance (₹)</th><th>Active Loan (₹)</th><th>Status</th><th></th></tr></thead>
+            <tbody id="member-list-body"></tbody></table>
+          </div></div>
+        </div>
+
+        <div id="a-member-detail" class="hidden">
+          <button class="back-link" onclick="backToMemberList()">← Back to member records</button>
+          <div class="section-head"><h3 id="detail-member-name">Member</h3><p id="detail-member-sub">Full record</p></div>
+
+          <div class="two-col">
+            <div class="card">
+              <h4>🏦 Savings account</h4>
+              <div class="kv-grid" id="d-savings"></div>
+            </div>
+            <div class="card">
+              <h4>📜 Share &amp; class holding</h4>
+              <div class="kv-grid" id="d-shares"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h4>🧾 Savings transactions</h4>
+            <div class="table-wrap"><table><thead><tr><th>Date</th><th>Type</th><th>Description</th><th>Amount (₹)</th><th>Balance (₹)</th></tr></thead><tbody id="d-transactions"></tbody></table></div>
+          </div>
+
+          <div class="two-col">
+            <div class="card">
+              <h4>💰 Dividend</h4>
+              <div class="table-wrap"><table><thead><tr><th>Year</th><th>Rate</th><th>Amount (₹)</th><th>Status</th></tr></thead><tbody id="d-dividend"></tbody></table></div>
+            </div>
+            <div class="card">
+              <h4>🧑‍🤝‍🧑 Nominee</h4>
+              <div class="kv-grid" id="d-nominee"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h4>🏷️ Loan &amp; repayment</h4>
+            <div id="d-loan-cards"></div>
+            <div class="table-wrap" style="margin-top:0.8rem;"><table><thead><tr><th>Due Date</th><th>EMI (₹)</th><th>Principal (₹)</th><th>Interest (₹)</th><th>Balance (₹)</th><th>Status</th></tr></thead><tbody id="d-loanrepay"></tbody></table></div>
+          </div>
+
+          <div class="card">
+            <h4>✅ Meeting attendance</h4>
+            <div class="table-wrap"><table><thead><tr><th>Date</th><th>Meeting</th><th>Status</th></tr></thead><tbody id="d-attendance"></tbody></table></div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <footer class="app-foot">Sahyog Cooperative Society — Member &amp; Savings Management Portal · Prototype data, for demonstration only</footer>
+  </div>
+</div>
+
+<script>
+/* ===================== MOCK DATA ===================== */
+const INR = n => '₹' + Number(n).toLocaleString('en-IN');
+
+const loanProductCatalog = [
+  { name: 'Gold Loan', rate: '9.5% p.a.', maxTenure: '36 months', maxAmount: INR(500000), note: 'Against gold ornaments, quick disbursal' },
+  { name: 'Personal Loan', rate: '12.0% p.a.', maxTenure: '48 months', maxAmount: INR(300000), note: 'For members with 2+ years standing' },
+  { name: 'Share-backed Loan', rate: '8.0% p.a.', maxTenure: '24 months', maxAmount: INR(200000), note: 'Against own share holding value' },
+  { name: 'Emergency Loan', rate: '10.5% p.a.', maxTenure: '12 months', maxAmount: INR(100000), note: 'Fast-track approval, medical/urgent need' },
+];
+
+const members = {
+  member1: {
+    id: 'M-0107', name: 'Ananya Rao', username: 'member1', password: 'member123',
+    savings: { accountNo: 'SA-10234', balance: 184250, status: 'Active', openedOn: '12 Apr 2019', interestRate: '6.5% p.a.', branch: 'Main Branch' },
+    transactions: [
+      { date: '02 Sep 2026', type: 'Deposit', desc: 'Monthly deposit', amount: 5000, balance: 184250 },
+      { date: '14 Aug 2026', type: 'Withdrawal', desc: 'ATM withdrawal', amount: -3000, balance: 179250 },
+      { date: '02 Aug 2026', type: 'Deposit', desc: 'Monthly deposit', amount: 5000, balance: 182250 },
+      { date: '18 Jul 2026', type: 'Interest', desc: 'Quarterly interest credit', amount: 2140, balance: 177250 },
+      { date: '02 Jul 2026', type: 'Deposit', desc: 'Monthly deposit', amount: 5000, balance: 175110 },
+      { date: '05 Jun 2026', type: 'Withdrawal', desc: 'Cheque withdrawal', amount: -8000, balance: 170110 },
+    ],
+    shares: { class: 'Class A — Ordinary', shareValue: 100, sharesHeld: 250, totalValue: 25000, certificateNo: 'SH-5521', issuedOn: '12 Apr 2019' },
+    dividends: [
+      { year: '2025–26', rate: '8%', amount: 2000, status: 'Paid' },
+      { year: '2024–25', rate: '7.5%', amount: 1875, status: 'Paid' },
+      { year: '2023–24', rate: '7%', amount: 1750, status: 'Paid' },
+    ],
+    loans: [
+      { loanId: 'LN-3321', product: 'Gold Loan', principal: 200000, outstanding: 86400, rate: '9.5% p.a.', tenure: '24 months', status: 'Active', disbursedOn: '10 Jan 2025' },
+    ],
+    loanRepayments: [
+      { date: '05 Sep 2026', emi: 9150, principal: 7560, interest: 1590, balance: 86400, status: 'Paid' },
+      { date: '05 Aug 2026', emi: 9150, principal: 7500, interest: 1650, balance: 93960, status: 'Paid' },
+      { date: '05 Jul 2026', emi: 9150, principal: 7440, interest: 1710, balance: 101460, status: 'Paid' },
+      { date: '05 Oct 2026', emi: 9150, principal: 7620, interest: 1530, balance: 78780, status: 'Upcoming' },
+    ],
+    nominee: { name: 'Rajeev Rao', relationship: 'Spouse', dob: '22 Nov 1986', sharePercent: '100%', registeredOn: '12 Apr 2019' },
+    meetings: [
+      { date: '28 Sep 2026', title: 'Quarterly General Meeting', type: 'General', venue: 'Society Hall' },
+      { date: '14 Jun 2026', title: 'Annual General Meeting 2025–26', type: 'AGM', venue: 'Society Hall' },
+      { date: '09 Mar 2026', title: 'Special Resolution Meeting', type: 'Special', venue: 'Society Hall' },
+    ],
+    attendance: [
+      { date: '14 Jun 2026', title: 'Annual General Meeting 2025–26', status: 'Present' },
+      { date: '09 Mar 2026', title: 'Special Resolution Meeting', status: 'Present' },
+      { date: '11 Dec 2025', title: 'Quarterly General Meeting', status: 'Absent' },
+    ],
+  },
+  member2: {
+    id: 'M-0088', name: 'Vikram Shah', username: 'member2', password: 'member123',
+    savings: { accountNo: 'SA-10088', balance: 96420, status: 'Active', openedOn: '03 Feb 2021', interestRate: '6.5% p.a.', branch: 'Main Branch' },
+    transactions: [
+      { date: '01 Sep 2026', type: 'Deposit', desc: 'Monthly deposit', amount: 3000, balance: 96420 },
+      { date: '12 Aug 2026', type: 'Withdrawal', desc: 'Cash withdrawal', amount: -2000, balance: 93420 },
+      { date: '01 Aug 2026', type: 'Deposit', desc: 'Monthly deposit', amount: 3000, balance: 95420 },
+    ],
+    shares: { class: 'Class B — Associate', shareValue: 100, sharesHeld: 120, totalValue: 12000, certificateNo: 'SH-6078', issuedOn: '03 Feb 2021' },
+    dividends: [
+      { year: '2025–26', rate: '8%', amount: 960, status: 'Paid' },
+      { year: '2024–25', rate: '7.5%', amount: 900, status: 'Paid' },
+    ],
+    loans: [
+      { loanId: 'LN-4410', product: 'Personal Loan', principal: 150000, outstanding: 112300, rate: '12.0% p.a.', tenure: '36 months', status: 'Active', disbursedOn: '20 Jun 2025' },
+    ],
+    loanRepayments: [
+      { date: '05 Sep 2026', emi: 4980, principal: 3540, interest: 1440, balance: 112300, status: 'Paid' },
+      { date: '05 Aug 2026', emi: 4980, principal: 3500, interest: 1480, balance: 115840, status: 'Paid' },
+      { date: '05 Oct 2026', emi: 4980, principal: 3580, interest: 1400, balance: 108720, status: 'Upcoming' },
+    ],
+    nominee: { name: 'Meera Shah', relationship: 'Mother', dob: '04 May 1958', sharePercent: '100%', registeredOn: '03 Feb 2021' },
+    meetings: [
+      { date: '28 Sep 2026', title: 'Quarterly General Meeting', type: 'General', venue: 'Society Hall' },
+      { date: '14 Jun 2026', title: 'Annual General Meeting 2025–26', type: 'AGM', venue: 'Society Hall' },
+    ],
+    attendance: [
+      { date: '14 Jun 2026', title: 'Annual General Meeting 2025–26', status: 'Present' },
+      { date: '11 Dec 2025', title: 'Quarterly General Meeting', status: 'Present' },
+    ],
+  },
+  member3: {
+    id: 'M-0152', name: 'Fatima Sheikh', username: 'member3', password: 'member123',
+    savings: { accountNo: 'SA-10152', balance: 251800, status: 'Active', openedOn: '19 Sep 2016', interestRate: '6.5% p.a.', branch: 'Main Branch' },
+    transactions: [
+      { date: '03 Sep 2026', type: 'Deposit', desc: 'Monthly deposit', amount: 7000, balance: 251800 },
+      { date: '19 Jul 2026', type: 'Interest', desc: 'Quarterly interest credit', amount: 3120, balance: 244800 },
+    ],
+    shares: { class: 'Class A — Ordinary', shareValue: 100, sharesHeld: 400, totalValue: 40000, certificateNo: 'SH-4190', issuedOn: '19 Sep 2016' },
+    dividends: [
+      { year: '2025–26', rate: '8%', amount: 3200, status: 'Paid' },
+      { year: '2024–25', rate: '7.5%', amount: 3000, status: 'Paid' },
+      { year: '2023–24', rate: '7%', amount: 2800, status: 'Paid' },
+    ],
+    loans: [],
+    loanRepayments: [],
+    nominee: { name: 'Imran Sheikh', relationship: 'Son', dob: '30 Jan 1998', sharePercent: '100%', registeredOn: '19 Sep 2016' },
+    meetings: [
+      { date: '28 Sep 2026', title: 'Quarterly General Meeting', type: 'General', venue: 'Society Hall' },
+    ],
+    attendance: [
+      { date: '14 Jun 2026', title: 'Annual General Meeting 2025–26', status: 'Present' },
+    ],
+  },
+};
+
+const staff = {
+  admin:      { id: 'A-01', name: 'Priya Nair',       username: 'admin',       password: 'admin123',  role: 'admin',      designation: 'Society Administrator' },
+  manager:    { id: 'S-203', name: 'Suresh Iyer',      username: 'manager1',    password: 'manager123', role: 'manager',    designation: 'Branch Manager' },
+  accountant: { id: 'S-202', name: 'Lata Deshpande',   username: 'accountant1', password: 'acc123',     role: 'accountant', designation: 'Society Accountant' },
+  clerk:      { id: 'S-201', name: 'Devendra Kulkarni',username: 'clerk1',      password: 'clerk123',   role: 'clerk',       designation: 'Front Office Clerk' },
+};
+
+/* Which admin-style panels each staff role can see, in display order */
+const panelMeta = [
+  { id: 'a-overview',     icon: '📊', label: 'Overview',                 group: 'Administration' },
+  { id: 'a-access',       icon: '🔐', label: 'Access Details',           group: 'Administration' },
+  { id: 'a-savings',      icon: '🏦', label: 'Savings Accounts',         group: 'All Members — Savings' },
+  { id: 'a-transactions', icon: '🧾', label: 'Savings Transactions',     group: 'All Members — Savings' },
+  { id: 'a-shares',       icon: '📜', label: 'Share & Class Holdings',   group: 'All Members — Shares' },
+  { id: 'a-dividend',     icon: '💰', label: 'Dividend',                 group: 'All Members — Shares' },
+  { id: 'a-loan',         icon: '🏷️', label: 'Loan',                     group: 'All Members — Loans' },
+  { id: 'a-loanrepay',    icon: '📆', label: 'Loan Repayment',           group: 'All Members — Loans' },
+  { id: 'a-loanproduct',  icon: '📦', label: 'Loan Products',            group: 'All Members — Loans' },
+  { id: 'a-nominee',      icon: '🧑‍🤝‍🧑', label: 'Nominee',             group: 'All Members — Other' },
+  { id: 'a-meetings',     icon: '🗓️', label: 'Meetings',                 group: 'All Members — Other' },
+  { id: 'a-attendance',   icon: '✅', label: 'Meeting Attendance',       group: 'All Members — Other' },
+  { id: 'a-members',      icon: '👥', label: 'Member Records',           group: 'Records' },
+];
+
+const roleAccess = {
+  admin:      ['a-overview', 'a-access', 'a-savings', 'a-transactions', 'a-shares', 'a-dividend', 'a-loan', 'a-loanrepay', 'a-loanproduct', 'a-nominee', 'a-meetings', 'a-attendance', 'a-members'],
+  manager:    ['a-overview', 'a-savings', 'a-transactions', 'a-shares', 'a-dividend', 'a-loan', 'a-loanrepay', 'a-loanproduct', 'a-nominee', 'a-meetings', 'a-attendance', 'a-members'],
+  accountant: ['a-overview', 'a-savings', 'a-transactions', 'a-shares', 'a-dividend', 'a-loan', 'a-loanrepay', 'a-loanproduct', 'a-members'],
+  clerk:      ['a-savings', 'a-transactions', 'a-shares', 'a-nominee', 'a-meetings', 'a-attendance', 'a-members'],
+};
+
+const accessMatrix = [
+  { module: 'Savings Account',       member: 'View own',        clerk: 'View & open all',      accountant: 'View all',           manager: 'View all',           admin: 'View / manage all' },
+  { module: 'Savings Transactions',  member: 'View own',        clerk: 'View & record all',    accountant: 'View & reconcile',   manager: 'View all',           admin: 'View / record all' },
+  { module: 'Share & Class Holding', member: 'View own',        clerk: 'View all',              accountant: 'View all',           manager: 'View all',           admin: 'View / manage all' },
+  { module: 'Dividend',              member: 'View own',        clerk: '—',                     accountant: 'Declare & view all', manager: 'View all',           admin: 'Declare / view all' },
+  { module: 'Loan',                  member: 'View own',        clerk: '—',                     accountant: 'View & process all', manager: 'Approve & view all', admin: 'Approve / view all' },
+  { module: 'Loan Repayment',        member: 'View own',        clerk: '—',                     accountant: 'View & record all',  manager: 'View all',           admin: 'View / update all' },
+  { module: 'Loan Products',         member: 'View catalog',    clerk: 'View catalog',          accountant: 'View & price',       manager: 'View all',           admin: 'Create / edit' },
+  { module: 'Nominee',               member: 'View / update own', clerk: 'View & update all',  accountant: '—',                  manager: 'View all',           admin: 'View all' },
+  { module: 'Meetings',              member: 'View schedule',   clerk: 'View schedule',         accountant: '—',                  manager: 'Create & manage',    admin: 'Create / manage' },
+  { module: 'Meeting Attendance',    member: 'View own',        clerk: 'Mark & view all',       accountant: '—',                  manager: 'View all',           admin: 'Mark / view all' },
+];
+
+/* ===================== STATE ===================== */
+let selectedRole = 'member';
+let currentUser = null; // {type:'member'|'admin', key}
+let currentDetailMemberKey = null;
+
+/* ===================== LOGIN LOGIC ===================== */
+const roleLabels = { member: 'Member', clerk: 'Clerk', accountant: 'Accountant', manager: 'Manager', admin: 'Admin' };
+
+function setRole(role) {
+  selectedRole = role;
+  ['member', 'clerk', 'accountant', 'manager', 'admin'].forEach(r => {
+    document.getElementById('role-' + r + '-btn').classList.toggle('active', r === role);
+  });
+  document.getElementById('login-btn').textContent = 'Sign in as ' + roleLabels[role];
+  document.getElementById('login-error').classList.add('hidden');
+}
+
+function handleLogin(e) {
+  e.preventDefault();
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value;
+  const errBox = document.getElementById('login-error');
+
+  if (selectedRole === 'member') {
+    const match = Object.values(members).find(m => m.username === username && m.password === password);
+    if (!match) {
+      errBox.textContent = 'Username or password is incorrect for a member account.';
+      errBox.classList.remove('hidden');
+      return false;
+    }
+    currentUser = { type: 'member', role: 'member', key: username };
+  } else {
+    const staffEntry = staff[selectedRole];
+    if (!staffEntry || staffEntry.username !== username || staffEntry.password !== password) {
+      errBox.textContent = 'Username or password is incorrect for a ' + roleLabels[selectedRole] + ' account.';
+      errBox.classList.remove('hidden');
+      return false;
+    }
+    currentUser = { type: 'staff', role: selectedRole, key: selectedRole };
+  }
+
+  try { localStorage.setItem('sahyog_session', JSON.stringify(currentUser)); } catch (err) {}
+  enterApp();
+  return false;
+}
+
+function handleLogout() {
+  currentUser = null;
+  try { localStorage.removeItem('sahyog_session'); } catch (err) {}
+  document.getElementById('app-screen').classList.remove('active');
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('username').value = '';
+  document.getElementById('password').value = '';
+}
+
+/* ===================== APP ENTRY ===================== */
+function buildStaffNav(role) {
+  const allowed = roleAccess[role];
+  let html = '';
+  let lastGroup = null;
+  panelMeta.forEach(p => {
+    if (!allowed.includes(p.id)) return;
+    if (p.group !== lastGroup) {
+      html += `<div class="nav-group-label">${p.group}</div>`;
+      lastGroup = p.group;
+    }
+    html += `<button class="nav-item" data-panel="${p.id}" onclick="showPanel('${p.id}')"><span class="ic">${p.icon}</span> ${p.label}</button>`;
+  });
+  document.getElementById('staff-nav').innerHTML = html;
+}
+
+function enterApp() {
+  document.getElementById('login-screen').style.display = 'none';
+  const app = document.getElementById('app-screen');
+  app.classList.add('active');
+
+  const badge = document.getElementById('role-badge');
+  if (currentUser.type === 'member') {
+    const m = members[currentUser.key];
+    document.getElementById('member-nav').classList.remove('hidden');
+    document.getElementById('staff-nav').classList.add('hidden');
+    document.getElementById('greet-name').textContent = 'Welcome, ' + m.name.split(' ')[0];
+    document.getElementById('greet-sub').textContent = 'Member ID ' + m.id + ' · ' + m.savings.branch;
+    badge.textContent = 'Member';
+    badge.className = 'role-badge member';
+    renderMemberPanels(m);
+    showPanel('m-savings');
+  } else {
+    const s = staff[currentUser.key];
+    document.getElementById('member-nav').classList.add('hidden');
+    document.getElementById('staff-nav').classList.remove('hidden');
+    buildStaffNav(currentUser.role);
+    document.getElementById('greet-name').textContent = 'Welcome, ' + s.name.split(' ')[0];
+    document.getElementById('greet-sub').textContent = s.designation;
+    badge.textContent = roleLabels[currentUser.role];
+    badge.className = 'role-badge ' + currentUser.role;
+    renderAdminPanels();
+    showPanel(roleAccess[currentUser.role][0]);
+  }
+}
+
+/* ===================== NAV ===================== */
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.toggle('active', b.dataset.panel === id));
+  toggleSidebar(false);
+  document.getElementById('content').scrollTop = 0;
+}
+
+function toggleSidebar(open) {
+  document.getElementById('sidebar').classList.toggle('open', open);
+  document.getElementById('scrim').classList.toggle('open', open);
+}
+
+/* ===================== RENDER: MEMBER ===================== */
+function statusPill(status) {
+  const map = { Active: 'green', Paid: 'green', Present: 'green', Upcoming: 'gold', Pending: 'gold', Absent: 'red', Closed: 'gray' };
+  return `<span class="pill ${map[status] || 'gray'}">${status}</span>`;
+}
+
+function renderMemberPanels(m) {
+  // Savings
+  document.getElementById('savings-stats').innerHTML = `
+    <div class="stat-card"><div class="label">Current balance</div><div class="value">${INR(m.savings.balance)}</div><div class="sub">${m.savings.accountNo}</div></div>
+    <div class="stat-card"><div class="label">Interest rate</div><div class="value">${m.savings.interestRate}</div><div class="sub">Applied quarterly</div></div>
+    <div class="stat-card"><div class="label">Status</div><div class="value">${statusPill(m.savings.status)}</div><div class="sub">Since ${m.savings.openedOn}</div></div>
+  `;
+  document.getElementById('savings-details').innerHTML = kv([
+    ['Account number', m.savings.accountNo], ['Branch', m.savings.branch],
+    ['Opened on', m.savings.openedOn], ['Interest rate', m.savings.interestRate],
+  ]);
+
+  // Transactions
+  document.getElementById('transactions-body').innerHTML = m.transactions.map(t => `
+    <tr><td>${t.date}</td><td>${t.type}</td><td>${t.desc}</td>
+    <td class="num" style="color:${t.amount < 0 ? 'var(--brick)' : 'var(--primary)'}">${t.amount < 0 ? '−' : '+'}${INR(Math.abs(t.amount))}</td>
+    <td class="num">${INR(t.balance)}</td></tr>`).join('');
+
+  // Shares
+  document.getElementById('shares-details').innerHTML = kv([
+    ['Share class', m.shares.class], ['Certificate No.', m.shares.certificateNo],
+    ['Shares held', m.shares.sharesHeld], ['Value per share', INR(m.shares.shareValue)],
+    ['Total holding value', INR(m.shares.totalValue)], ['Issued on', m.shares.issuedOn],
+  ]);
+
+  // Dividend
+  document.getElementById('dividend-body').innerHTML = m.dividends.map(d => `
+    <tr><td>${d.year}</td><td>${d.rate}</td><td class="num">${INR(d.amount)}</td><td>${statusPill(d.status)}</td></tr>`).join('');
+
+  // Loan
+  document.getElementById('loan-cards').innerHTML = m.loans.length ? m.loans.map(l => `
+    <div class="card">
+      <h4>🏷️ ${l.product} <span style="margin-left:auto;">${statusPill(l.status)}</span></h4>
+      <div class="kv-grid">
+        ${kv([['Loan ID', l.loanId], ['Principal', INR(l.principal)], ['Outstanding', INR(l.outstanding)],
+               ['Interest rate', l.rate], ['Tenure', l.tenure], ['Disbursed on', l.disbursedOn]])}
+      </div>
+    </div>`).join('') : emptyState('No active loans', 'This member currently has no loans against their membership.');
+
+  // Loan repayment
+  document.getElementById('loanrepay-body').innerHTML = m.loanRepayments.length ? m.loanRepayments.map(r => `
+    <tr><td>${r.date}</td><td class="num">${INR(r.emi)}</td><td class="num">${INR(r.principal)}</td>
+    <td class="num">${INR(r.interest)}</td><td class="num">${INR(r.balance)}</td><td>${statusPill(r.status)}</td></tr>`).join('')
+    : `<tr><td colspan="6" style="color:var(--muted);">No repayment schedule — no active loan.</td></tr>`;
+
+  // Loan products (catalog, same for all)
+  document.getElementById('loanproduct-cards').innerHTML = loanProductCatalog.map(p => `
+    <div class="stat-card">
+      <div class="label">${p.name}</div>
+      <div class="value" style="font-size:1.1rem;">${p.rate}</div>
+      <div class="sub">Up to ${p.maxAmount} · ${p.maxTenure}</div>
+      <div class="sub" style="margin-top:0.4rem;">${p.note}</div>
+    </div>`).join('');
+
+  // Nominee
+  document.getElementById('nominee-details').innerHTML = kv([
+    ['Name', m.nominee.name], ['Relationship', m.nominee.relationship],
+    ['Date of birth', m.nominee.dob], ['Share of proceeds', m.nominee.sharePercent],
+    ['Registered on', m.nominee.registeredOn],
+  ]);
+
+  // Meetings
+  document.getElementById('meetings-body').innerHTML = m.meetings.map(mt => `
+    <tr><td>${mt.date}</td><td>${mt.title}</td><td>${mt.type}</td><td>${mt.venue}</td></tr>`).join('');
+
+  // Attendance
+  document.getElementById('attendance-body').innerHTML = m.attendance.map(a => `
+    <tr><td>${a.date}</td><td>${a.title}</td><td>${statusPill(a.status)}</td></tr>`).join('');
+}
+
+function kv(pairs) {
+  return pairs.map(([k, v]) => `<div class="kv"><div class="k">${k}</div><div class="v">${v}</div></div>`).join('');
+}
+function emptyState(title, body) {
+  return `<div class="card"><h4>${title}</h4><p style="color:var(--muted); font-size:0.86rem; margin:0;">${body}</p></div>`;
+}
+
+/* ===================== RENDER: ADMIN ===================== */
+function renderAdminPanels() {
+  const all = Object.values(members);
+  const totalSavings = all.reduce((s, m) => s + m.savings.balance, 0);
+  const totalOutstanding = all.reduce((s, m) => s + m.loans.reduce((x, l) => x + l.outstanding, 0), 0);
+  const activeLoans = all.reduce((s, m) => s + m.loans.filter(l => l.status === 'Active').length, 0);
+
+  document.getElementById('admin-stats').innerHTML = `
+    <div class="stat-card"><div class="label">Total members</div><div class="value">${all.length}</div><div class="sub">All active</div></div>
+    <div class="stat-card"><div class="label">Total savings held</div><div class="value">${INR(totalSavings)}</div><div class="sub">Across all accounts</div></div>
+    <div class="stat-card"><div class="label">Loans outstanding</div><div class="value">${INR(totalOutstanding)}</div><div class="sub">${activeLoans} active loan(s)</div></div>
+    <div class="stat-card"><div class="label">Next meeting</div><div class="value" style="font-size:1.1rem;">28 Sep 2026</div><div class="sub">Quarterly General Meeting</div></div>
+  `;
+  document.getElementById('admin-next-meeting').innerHTML = kv([
+    ['Meeting', 'Quarterly General Meeting'], ['Date', '28 Sep 2026'],
+    ['Venue', 'Society Hall'], ['Type', 'General'],
+  ]);
+
+  document.getElementById('access-body').innerHTML = accessMatrix.map(r => `
+    <tr><td>${r.module}</td><td class="own">${r.member}</td>
+    <td class="${r.clerk === '—' ? 'no' : 'yes'}">${r.clerk}</td>
+    <td class="${r.accountant === '—' ? 'no' : 'yes'}">${r.accountant}</td>
+    <td class="${r.manager === '—' ? 'no' : 'yes'}">${r.manager}</td>
+    <td class="yes">${r.admin}</td></tr>`).join('');
+
+  document.getElementById('member-list-body').innerHTML = Object.entries(members).map(([key, m]) => `
+    <tr class="member-row" onclick="openMemberDetail('${key}')">
+      <td>${m.id}</td><td>${m.name}</td><td class="num">${INR(m.savings.balance)}</td>
+      <td class="num">${m.loans.length ? INR(m.loans[0].outstanding) : '—'}</td>
+      <td>${statusPill(m.savings.status)}</td>
+      <td style="color:var(--primary); font-weight:600;">View →</td>
+    </tr>`).join('');
+
+  renderAdminModuleTables();
+}
+
+function renderAdminModuleTables() {
+  const entries = Object.entries(members);
+
+  // Savings accounts
+  document.getElementById('a-savings-body').innerHTML = entries.map(([key, m]) => `
+    <tr class="member-row" onclick="openMemberDetail('${key}')">
+      <td>${m.name}</td><td>${m.savings.accountNo}</td><td class="num">${INR(m.savings.balance)}</td>
+      <td>${m.savings.interestRate}</td><td>${m.savings.openedOn}</td><td>${statusPill(m.savings.status)}</td></tr>`).join('');
+
+  // Transactions (combined, sorted by date desc as given)
+  let txRows = [];
+  entries.forEach(([key, m]) => m.transactions.forEach(t => txRows.push({ ...t, member: m.name, key })));
+  document.getElementById('a-transactions-body').innerHTML = txRows.map(t => `
+    <tr class="member-row" onclick="openMemberDetail('${t.key}')">
+      <td>${t.date}</td><td>${t.member}</td><td>${t.type}</td><td>${t.desc}</td>
+      <td class="num" style="color:${t.amount < 0 ? 'var(--brick)' : 'var(--primary)'}">${t.amount < 0 ? '−' : '+'}${INR(Math.abs(t.amount))}</td>
+      <td class="num">${INR(t.balance)}</td></tr>`).join('');
+
+  // Shares
+  document.getElementById('a-shares-body').innerHTML = entries.map(([key, m]) => `
+    <tr class="member-row" onclick="openMemberDetail('${key}')">
+      <td>${m.name}</td><td>${m.shares.class}</td><td>${m.shares.certificateNo}</td>
+      <td class="num">${m.shares.sharesHeld}</td><td class="num">${INR(m.shares.shareValue)}</td>
+      <td class="num">${INR(m.shares.totalValue)}</td></tr>`).join('');
+
+  // Dividend
+  let divRows = [];
+  entries.forEach(([key, m]) => m.dividends.forEach(d => divRows.push({ ...d, member: m.name, key })));
+  document.getElementById('a-dividend-body').innerHTML = divRows.map(d => `
+    <tr class="member-row" onclick="openMemberDetail('${d.key}')">
+      <td>${d.member}</td><td>${d.year}</td><td>${d.rate}</td><td class="num">${INR(d.amount)}</td><td>${statusPill(d.status)}</td></tr>`).join('');
+
+  // Loans
+  let loanRows = [];
+  entries.forEach(([key, m]) => m.loans.forEach(l => loanRows.push({ ...l, member: m.name, key })));
+  document.getElementById('a-loan-body').innerHTML = loanRows.length ? loanRows.map(l => `
+    <tr class="member-row" onclick="openMemberDetail('${l.key}')">
+      <td>${l.member}</td><td>${l.loanId}</td><td>${l.product}</td><td class="num">${INR(l.principal)}</td>
+      <td class="num">${INR(l.outstanding)}</td><td>${l.rate}</td><td>${statusPill(l.status)}</td></tr>`).join('')
+    : `<tr><td colspan="7" style="color:var(--muted);">No loans currently on the society's books.</td></tr>`;
+
+  // Loan repayments
+  let repayRows = [];
+  entries.forEach(([key, m]) => m.loanRepayments.forEach(r => repayRows.push({ ...r, member: m.name, key })));
+  document.getElementById('a-loanrepay-body').innerHTML = repayRows.length ? repayRows.map(r => `
+    <tr class="member-row" onclick="openMemberDetail('${r.key}')">
+      <td>${r.member}</td><td>${r.date}</td><td class="num">${INR(r.emi)}</td><td class="num">${INR(r.principal)}</td>
+      <td class="num">${INR(r.interest)}</td><td class="num">${INR(r.balance)}</td><td>${statusPill(r.status)}</td></tr>`).join('')
+    : `<tr><td colspan="7" style="color:var(--muted);">No repayment records.</td></tr>`;
+
+  // Loan products
+  document.getElementById('a-loanproduct-cards').innerHTML = loanProductCatalog.map(p => `
+    <div class="stat-card">
+      <div class="label">${p.name}</div>
+      <div class="value" style="font-size:1.1rem;">${p.rate}</div>
+      <div class="sub">Up to ${p.maxAmount} · ${p.maxTenure}</div>
+      <div class="sub" style="margin-top:0.4rem;">${p.note}</div>
+    </div>`).join('');
+
+  // Nominee
+  document.getElementById('a-nominee-body').innerHTML = entries.map(([key, m]) => `
+    <tr class="member-row" onclick="openMemberDetail('${key}')">
+      <td>${m.name}</td><td>${m.nominee.name}</td><td>${m.nominee.relationship}</td>
+      <td>${m.nominee.dob}</td><td>${m.nominee.sharePercent}</td></tr>`).join('');
+
+  // Meetings (shared schedule — take the superset from member1)
+  const meetingList = members.member1.meetings;
+  document.getElementById('a-meetings-body').innerHTML = meetingList.map(mt => `
+    <tr><td>${mt.date}</td><td>${mt.title}</td><td>${mt.type}</td><td>${mt.venue}</td></tr>`).join('');
+
+  // Attendance (all members)
+  let attRows = [];
+  entries.forEach(([key, m]) => m.attendance.forEach(a => attRows.push({ ...a, member: m.name, key })));
+  document.getElementById('a-attendance-body').innerHTML = attRows.map(a => `
+    <tr class="member-row" onclick="openMemberDetail('${a.key}')">
+      <td>${a.member}</td><td>${a.date}</td><td>${a.title}</td><td>${statusPill(a.status)}</td></tr>`).join('');
+}
+
+function openMemberDetail(key) {
+  currentDetailMemberKey = key;
+  const m = members[key];
+  showPanel('a-members');
+  document.getElementById('a-members-list').classList.add('hidden');
+  document.getElementById('a-member-detail').classList.remove('hidden');
+  document.getElementById('detail-member-name').textContent = m.name;
+  document.getElementById('detail-member-sub').textContent = m.id + ' · ' + m.savings.accountNo;
+
+  document.getElementById('d-savings').innerHTML = kv([
+    ['Account number', m.savings.accountNo], ['Balance', INR(m.savings.balance)],
+    ['Branch', m.savings.branch], ['Opened on', m.savings.openedOn],
+  ]);
+  document.getElementById('d-shares').innerHTML = kv([
+    ['Share class', m.shares.class], ['Shares held', m.shares.sharesHeld],
+    ['Total value', INR(m.shares.totalValue)], ['Certificate No.', m.shares.certificateNo],
+  ]);
+  document.getElementById('d-transactions').innerHTML = m.transactions.map(t => `
+    <tr><td>${t.date}</td><td>${t.type}</td><td>${t.desc}</td>
+    <td class="num" style="color:${t.amount < 0 ? 'var(--brick)' : 'var(--primary)'}">${t.amount < 0 ? '−' : '+'}${INR(Math.abs(t.amount))}</td>
+    <td class="num">${INR(t.balance)}</td></tr>`).join('');
+  document.getElementById('d-dividend').innerHTML = m.dividends.map(d => `
+    <tr><td>${d.year}</td><td>${d.rate}</td><td class="num">${INR(d.amount)}</td><td>${statusPill(d.status)}</td></tr>`).join('');
+  document.getElementById('d-nominee').innerHTML = kv([
+    ['Name', m.nominee.name], ['Relationship', m.nominee.relationship], ['Share %', m.nominee.sharePercent],
+  ]);
+  document.getElementById('d-loan-cards').innerHTML = m.loans.length ? m.loans.map(l => `
+    <div class="kv-grid" style="margin-bottom:0.8rem;">
+      ${kv([['Product', l.product], ['Loan ID', l.loanId], ['Principal', INR(l.principal)],
+             ['Outstanding', INR(l.outstanding)], ['Rate', l.rate], ['Status', statusPill(l.status)]])}
+    </div>`).join('') : `<p style="color:var(--muted); font-size:0.86rem;">No active loan for this member.</p>`;
+  document.getElementById('d-loanrepay').innerHTML = m.loanRepayments.length ? m.loanRepayments.map(r => `
+    <tr><td>${r.date}</td><td class="num">${INR(r.emi)}</td><td class="num">${INR(r.principal)}</td>
+    <td class="num">${INR(r.interest)}</td><td class="num">${INR(r.balance)}</td><td>${statusPill(r.status)}</td></tr>`).join('')
+    : `<tr><td colspan="6" style="color:var(--muted);">No repayment schedule.</td></tr>`;
+  document.getElementById('d-attendance').innerHTML = m.attendance.map(a => `
+    <tr><td>${a.date}</td><td>${a.title}</td><td>${statusPill(a.status)}</td></tr>`).join('');
+
+  document.getElementById('content').scrollTop = 0;
+}
+
+function backToMemberList() {
+  document.getElementById('a-member-detail').classList.add('hidden');
+  document.getElementById('a-members-list').classList.remove('hidden');
+}
+
+/* ===================== RESTORE SESSION ===================== */
+(function restoreSession() {
+  try {
+    const raw = localStorage.getItem('sahyog_session');
+    if (raw) {
+      const session = JSON.parse(raw);
+      if (session && session.type && session.key && (members[session.key] || staff[session.key])) {
+        currentUser = session;
+        enterApp();
+      }
+    }
+  } catch (err) { /* ignore */ }
+})();
+</script>
+</body>
+</html>
